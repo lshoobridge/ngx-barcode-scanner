@@ -14,6 +14,7 @@ import { DEFAULT_CONFIG } from './barcode-scanner-livestream.config';
 export class BarecodeScannerLivestreamComponent implements OnChanges, OnDestroy {
     // Inputs
     @Input() type: string;
+    @Input() settings: any;
 
     // Outputs
     @Output() valueChanges = new EventEmitter();
@@ -34,6 +35,14 @@ export class BarecodeScannerLivestreamComponent implements OnChanges, OnDestroy 
 
     private _init() {
         return new Promise((resolve, reject) => {
+            console.log('* barcode-scanner-livestream.component.ts _init()');
+            if(this.settings) {
+                console.log('* barcode-scanner-livestream.component.ts configQuagga: '+JSON.stringify(this.configQuagga));
+                console.log('* barcode-scanner-livestream.component.ts settings: '+JSON.stringify(this.settings));
+                this.configQuagga = Object.assign(this.configQuagga, this.settings);
+                console.log('* barcode-scanner-livestream.component.ts configQuagga NEW: '+JSON.stringify(this.configQuagga));
+            }
+
             Quagga.onProcessed((result) => this.onProcessed(result));
 
             Quagga.onDetected((result) => this.onDetected(result));
